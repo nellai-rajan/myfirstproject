@@ -11,6 +11,8 @@ require('./all_controller/kafka.js')
 
 require('./all_controller/redis.js')
 
+require('./utils/product-pdf.js')
+
 const app=require('./express.js')
 require('dotenv').config()
 const PORT=process.env.PORT
