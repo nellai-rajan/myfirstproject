@@ -3,6 +3,8 @@ const groundGames=require('../all_schemas/ground-game.schma.js')
 const { dbconnect } = require('../dbconnection.js')
 dbconnect()
 const path = require('path');
+
+const { productedPdf }=require('../utils/product-pdf.js')
 // const hummus = require('hummus-recipe');
 
 const multer = require('multer');
@@ -630,6 +632,20 @@ await new Promise((resolve, reject) => {
     console.error('❌ Something went wrong:', error);
     res.status(500).send('Server Error');
   }
+});
+
+
+
+app.post('/protecting-pdf', upload.single('file'), async(req, res) => {
+ console.log("req.file ===>", req.file);
+  console.log("req.body ===>", req.body);
+  
+  let protectedPdf=  await productedPdf(req.file.buffer,req.body.password)
+
+  res.setHeader('Content-Disposition', `attachment; filename="protected-${req.file.originalname}.pdf"`);
+  res.setHeader('Content-Type', 'application/pdf');
+  res.send(protectedPdf);
+
 });
 
 
