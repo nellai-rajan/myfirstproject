@@ -7,7 +7,6 @@ const path = require('path');
 
 const multer = require('multer');
 const fs = require('fs');
-const { PDFDocument,StandardFonts,rgb } = require('pdf-lib-plus-encrypt');
 const { exec } = require('child_process')
 
 const fsPromise=require('fs/promises')
@@ -97,24 +96,7 @@ app.get('/getAllGroundGames',async(req,res)=>{
 const upload = multer(); // store uploaded files here
 // // upload.single('file')
 
-app.post('/protect-pdf', upload.single('file'), async(req, res) => {
- console.log("req.file ===>", req.file);
-  console.log("req.body ===>", req.body);
-  const pdfDoc=await PDFDocument.load(req.file.buffer)
-  let password=req.body.password
-  console.log("password====>",typeof(password))
-   await pdfDoc.encrypt({
-    userPassword: password,
-    ownerPassword:password,
-    permissions: { printing: false, modifying: false },
-  });
 
-  let protectedPdf=  Buffer.from(await pdfDoc.save());
-  res.setHeader('Content-Disposition', `attachment; filename="protected-${Date.now()}.pdf"`);
-  res.setHeader('Content-Type', 'application/pdf');
-  res.send(protectedPdf);
-
-});
 
 // const upload = multer({ dest: 'uploads/' }); // store uploaded files here
 
