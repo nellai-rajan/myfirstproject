@@ -5,6 +5,7 @@ dbconnect()
 const path = require('path');
 
 const { productedPdf }=require('../utils/product-pdf.js')
+const {sendEmail}=require('../utils/email.js')
 // const hummus = require('hummus-recipe');
 
 const multer = require('multer');
@@ -646,7 +647,17 @@ app.post('/protecting-pdf', upload.single('file'), async(req, res) => {
   res.setHeader('Content-Type', 'application/pdf');
   res.send(protectedPdf);
 
+
 });
+
+
+
+app.post('/send-mail',async(req,res)=>{
+//call mail
+const mail= await sendEmail('yourmail@gmail.com','tomail@gmail.com','Hello from Node.js','This is a plain text email.')
+console.log("mailresponse=====>",mail)
+res.send(mail)
+})
 
 
 
